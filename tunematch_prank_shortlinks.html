@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuneMatch - Find Your Perfect Song</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 95vh;
+        }
+        h1 {
+            text-align: center;
+        }
+        button {
+            display: block;
+            margin: 2em auto 0;
+            padding: 0.5em 2em;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TuneMatch</h1>
+        <p>Answer a few questions and we'll find the perfect song for your vibe.</p>
+        <form id="quizForm">
+            <div id="questions"></div>
+            <button type="submit">Find My Song</button>
+        </form>
+    </div>
+    <script>
+        const questions = [
+            "What’s your favorite genre?",
+            "What’s your current mood?",
+            "Pick a weekend activity.",
+            "Favorite season?",
+            "Choose a color."
+        ];
+
+        const answers = [
+            ["Pop", "Rock", "Jazz", "Electronic"],
+            ["Happy", "Sad", "Angry", "Chill"],
+            ["Hiking", "Reading", "Gaming", "Sleeping"],
+            ["Spring", "Summer", "Autumn", "Winter"],
+            ["Red", "Blue", "Green", "Purple"]
+        ];
+
+        const nmixxLinks = [
+            "https://youtu.be/EDnwWcFpObo", // Love Me Like This
+            "https://youtu.be/EDnwWcFpObo", // O.O
+            "https://youtu.be/EDnwWcFpObo", // Dice
+            "https://youtu.be/EDnwWcFpObo", // Young, Dumb, Stupid
+            "https://youtu.be/EDnwWcFpObo"   // Reels - Random fun
+        ];
+
+        const form = document.getElementById("quizForm");
+        const questionsContainer = document.getElementById("questions");
+
+        questions.forEach((question, index) => {
+            const qDiv = document.createElement("div");
+            qDiv.innerHTML = `<p>${index + 1}. ${question}</p>`;
+            answers[index].forEach(answer => {
+                const input = document.createElement("input");
+                input.type = "radio";
+                input.name = "q" + index;
+                input.value = answer;
+                qDiv.appendChild(input);
+                qDiv.appendChild(document.createTextNode(answer));
+                qDiv.appendChild(document.createElement("br"));
+            });
+            questionsContainer.appendChild(qDiv);
+        });
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            let allAnswered = true;
+            for (let i = 0; i < questions.length; i++) {
+                if (!formData.get("q" + i)) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            if (!allAnswered) {
+                alert("Please answer all questions before submitting!");
+                return;
+            }
+
+            document.body.innerHTML = "<div class='container'><h2>Analyzing your vibe...</h2><p>Please wait while we calculate your perfect song match.</p></div>";
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * nmixxLinks.length);
+                window.location.href = nmixxLinks[randomIndex];
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
